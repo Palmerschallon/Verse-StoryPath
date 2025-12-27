@@ -1,6 +1,8 @@
 
 ##  **The Tale of the Model Maker**
 
+![The Model Maker](../images/02-model-maker.png)
+
 In a village known for its inventors, there lived a Model Maker who crafted more than toys—she built contraptions that could *learn*.
 
 Every day, villagers brought her baskets filled with pairs of information. For each basket, the first part contained **facts**—temperatures, rainfall, wind speeds, weights, blood glucose levels, flipper lengths, bill widths. The second part held **outcomes**—cones sold, a diabetes yes/no, the name of a penguin species.

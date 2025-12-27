@@ -1,4 +1,6 @@
-The Tale of the Line Through the Scatter
+## The Tale of the Line Through the Scatter
+
+![The Line Through the Scatter](../images/04-regression.png)
 
 One summer, the villagers came to Mira with a simple wish:
 

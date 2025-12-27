@@ -1,6 +1,8 @@
-The Tale of the Many Ways to Learn
+## The Tale of the Many Ways to Learn
 
-Word spread about Mira’s learning machines, and soon people asked her a deeper question:
+![The Many Ways to Learn](../images/03-types-of-ml.png)
+
+Word spread about Mira's learning machines, and soon people asked her a deeper question:
 
 “Do all machines learn the same way?”
 

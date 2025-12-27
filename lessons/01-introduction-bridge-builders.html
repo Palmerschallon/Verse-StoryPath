@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 1 — The Bridge-Builders</title>
+    <title>The Bridge-Builders | EmberMovie</title>
     <style>
         * {
             margin: 0;
@@ -12,123 +12,187 @@
         }
 
         body {
-            font-family: 'Georgia', serif;
             background: #0a0a0a;
-            color: #e8e8e8;
-            line-height: 1.8;
-            padding: 0;
+            color: #c8c8c8;
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
         }
 
-        .hero-container {
-            position: relative;
-            width: 100%;
-            height: 60vh;
-            min-height: 400px;
-            overflow: hidden;
-        }
-
-        #bridgeCanvas {
-            position: absolute;
+        /* Terminal scanlines */
+        .scanlines {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.03),
+                rgba(0, 0, 0, 0.03) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
         }
 
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        .movie-container {
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(transparent 60%, #0a0a0a);
-            pointer-events: none;
+            padding: 2rem;
         }
 
-        .hero-title {
-            font-size: 3rem;
-            font-weight: 300;
-            letter-spacing: 0.2em;
+        .terminal {
+            width: 100%;
+            max-width: 1000px;
+            background: #000;
+            border: 1px solid #303030;
+            position: relative;
+        }
+
+        .terminal-header {
+            color: #505050;
+            font-size: 10px;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #202020;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #movieCanvas {
+            width: 100%;
+            height: 500px;
+            display: block;
+            background: #000;
+        }
+
+        .controls {
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid #202020;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: #0a0a0a;
+            color: #808080;
+            border: 1px solid #303030;
+            padding: 8px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.1s;
             text-transform: uppercase;
-            text-shadow: 0 0 40px rgba(255,200,100,0.5);
+            letter-spacing: 0.1em;
         }
 
+        .btn:hover:not(:disabled) {
+            background: #1a1a1a;
+            border-color: #ff8c32;
+            color: #ff8c32;
+        }
+
+        .btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .btn.active {
+            background: #ff8c32;
+            color: #000;
+            border-color: #ff8c32;
+        }
+
+        .progress-container {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #202020;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #ff8c32;
+            width: 0%;
+            transition: width 0.1s;
+            box-shadow: 0 0 6px rgba(255, 140, 50, 0.5);
+        }
+
+        .scene-text {
+            color: #505050;
+            font-size: 10px;
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        /* Content section below movie */
         .content {
             max-width: 800px;
             margin: 0 auto;
             padding: 4rem 2rem;
         }
 
-        h1 {
-            font-size: 2.5rem;
+        .content h1 {
+            font-size: 2rem;
             font-weight: 300;
             margin-bottom: 2rem;
-            color: #f0c040;
+            color: #ffc864;
+            font-family: Georgia, serif;
         }
 
-        h2 {
-            font-size: 1.5rem;
+        .content h2 {
+            font-size: 1.3rem;
             font-weight: 400;
             margin: 3rem 0 1.5rem;
             color: #d4a030;
             border-bottom: 1px solid #333;
             padding-bottom: 0.5rem;
+            font-family: Georgia, serif;
         }
 
-        p {
+        .content p {
             margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-family: Georgia, serif;
         }
 
-        strong {
-            color: #f0c040;
-        }
+        .content strong { color: #ffc864; }
+        .content em { color: #c8a060; }
 
-        em {
-            color: #c8a060;
-        }
-
-        ul {
+        .content ul {
             margin: 1.5rem 0;
             padding-left: 2rem;
+            font-family: Georgia, serif;
         }
 
-        li {
+        .content li {
             margin-bottom: 0.5rem;
+            line-height: 1.8;
         }
 
-        blockquote {
-            border-left: 3px solid #f0c040;
+        .content blockquote {
+            border-left: 3px solid #ffc864;
             padding-left: 1.5rem;
             margin: 2rem 0;
             font-style: italic;
             color: #c8c8c8;
+            font-family: Georgia, serif;
         }
 
-        hr {
+        .content hr {
             border: none;
             border-top: 1px solid #333;
             margin: 3rem 0;
-        }
-
-        .highlight {
-            background: linear-gradient(90deg, transparent, rgba(240,192,64,0.1), transparent);
-            padding: 2rem;
-            margin: 2rem 0;
-            border-radius: 4px;
-        }
-
-        .formula {
-            font-family: 'Courier New', monospace;
-            background: #1a1a1a;
-            padding: 1rem 2rem;
-            border-radius: 4px;
-            text-align: center;
-            font-size: 1.2rem;
-            color: #f0c040;
-            margin: 1.5rem 0;
         }
 
         .poetic {
@@ -136,26 +200,95 @@
             font-style: italic;
             color: #a0a0a0;
             margin: 2rem 0;
+            font-family: Georgia, serif;
+        }
+
+        .highlight {
+            background: linear-gradient(90deg, transparent, rgba(255,200,100,0.1), transparent);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+            font-family: Georgia, serif;
         }
 
         footer {
             text-align: center;
             padding: 3rem;
-            color: #666;
+            color: #505050;
             font-size: 0.9rem;
+        }
+
+        .start-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            cursor: pointer;
+        }
+
+        .start-overlay:hover .start-text {
+            color: #ff8c32;
+        }
+
+        .start-text {
+            color: #808080;
+            font-size: 14px;
+            letter-spacing: 0.2em;
+            transition: color 0.2s;
+        }
+
+        .start-title {
+            color: #ffc864;
+            font-size: 24px;
+            letter-spacing: 0.3em;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <!-- Animated Hero -->
-    <div class="hero-container">
-        <canvas id="bridgeCanvas"></canvas>
-        <div class="hero-overlay">
-            <h1 class="hero-title">The Bridge-Builders</h1>
+    <div class="scanlines"></div>
+
+    <div class="movie-container">
+        <div class="terminal">
+            <div class="terminal-header">
+                <span>EMBERMOVIE // THE BRIDGE-BUILDERS</span>
+                <span id="sceneLabel">SCENE 0/9</span>
+            </div>
+
+            <div style="position: relative;">
+                <canvas id="movieCanvas" width="1000" height="500"></canvas>
+                <div class="start-overlay" id="startOverlay">
+                    <div class="start-title">THE BRIDGE-BUILDERS</div>
+                    <div class="start-text">[ CLICK TO BEGIN ]</div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="btn" id="prevBtn">◀ PREV</button>
+                <button class="btn" id="playBtn">▶ PLAY</button>
+                <button class="btn" id="nextBtn">NEXT ▶</button>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="scene-text" id="sceneText">Title</div>
+                </div>
+                <button class="btn" id="muteBtn">♪ MUSIC</button>
+            </div>
         </div>
     </div>
 
+    <!-- Full Written Content -->
     <div class="content">
+        <h1>Lesson 1 — The Bridge-Builders</h1>
+
         <p>There was once a vast city split by a wide river.</p>
 
         <p>On one side lived the <strong>Keepers of Data</strong> — people who collected the stories of the world. They walked through ice-cream shops, hospitals, and frozen Antarctic coasts, gathering numbers and notes like fireflies in jars:</p>
@@ -267,184 +400,872 @@
     </footer>
 
     <script>
-        // EmberMovie: The Bridge
-        const canvas = document.getElementById('bridgeCanvas');
+        // ============================================================
+        // EMBERMOVIE: THE BRIDGE-BUILDERS
+        // ============================================================
+
+        const canvas = document.getElementById('movieCanvas');
         const ctx = canvas.getContext('2d');
+        const W = canvas.width;
+        const H = canvas.height;
 
-        function resize() {
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-        }
-        resize();
-        window.addEventListener('resize', resize);
+        // Colors (EmberMovie palette)
+        const COLORS = {
+            keeper: '#96c8ff',      // Blue
+            maker: '#ff8c32',       // Orange
+            bridge: '#ffc864',      // Gold
+            together: '#ffc8ff',    // Purple
+            cluster: '#ffff64',     // Yellow
+            dim: '#505050',
+            bg: '#000000'
+        };
 
-        // Particles
-        const particles = [];
-        const PARTICLE_COUNT = 150;
-
-        // Colors
-        const KEEPER_COLOR = { r: 100, g: 180, b: 255 };  // Blue - data side
-        const MAKER_COLOR = { r: 255, g: 160, b: 60 };    // Orange - machine side
-        const BRIDGE_COLOR = { r: 255, g: 200, b: 100 };  // Gold - the bridge
-
-        class Particle {
+        // ============================================================
+        // MUSIC ENGINE (Web Audio API)
+        // ============================================================
+        class MusicEngine {
             constructor() {
-                this.reset();
+                this.ctx = null;
+                this.enabled = false;
+                this.muted = false;
+                this.masterGain = null;
+                // Pentatonic scale frequencies
+                this.scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33];
+                this.drone = null;
             }
 
-            reset() {
-                // Start from either side
-                this.side = Math.random() > 0.5 ? 'keeper' : 'maker';
+            init() {
+                if (this.ctx) return;
+                this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                this.masterGain = this.ctx.createGain();
+                this.masterGain.gain.value = 0.3;
+                this.masterGain.connect(this.ctx.destination);
+                this.enabled = true;
+                this.startDrone();
+            }
 
-                if (this.side === 'keeper') {
-                    this.x = Math.random() * canvas.width * 0.3;
-                    this.targetX = canvas.width * 0.7 + Math.random() * canvas.width * 0.3;
-                    this.color = KEEPER_COLOR;
-                } else {
-                    this.x = canvas.width * 0.7 + Math.random() * canvas.width * 0.3;
-                    this.targetX = Math.random() * canvas.width * 0.3;
-                    this.color = MAKER_COLOR;
+            startDrone() {
+                if (!this.enabled || this.drone) return;
+
+                // Create ambient drone
+                const osc1 = this.ctx.createOscillator();
+                const osc2 = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc1.type = 'sine';
+                osc1.frequency.value = 65.41; // C2
+                osc2.type = 'sine';
+                osc2.frequency.value = 98.00; // G2
+
+                gain.gain.value = 0.08;
+
+                osc1.connect(gain);
+                osc2.connect(gain);
+                gain.connect(this.masterGain);
+
+                osc1.start();
+                osc2.start();
+
+                this.drone = { osc1, osc2, gain };
+            }
+
+            stopDrone() {
+                if (this.drone) {
+                    this.drone.osc1.stop();
+                    this.drone.osc2.stop();
+                    this.drone = null;
                 }
+            }
 
-                this.y = Math.random() * canvas.height;
-                this.targetY = canvas.height * 0.4 + Math.random() * canvas.height * 0.2;
+            playNote(degree, duration = 0.5, delay = 0) {
+                if (!this.enabled || this.muted) return;
 
-                this.speed = 0.5 + Math.random() * 1.5;
-                this.size = 1 + Math.random() * 3;
-                this.life = 0;
-                this.maxLife = 200 + Math.random() * 300;
-                this.crossing = false;
+                const freq = this.scale[degree % this.scale.length];
+                const time = this.ctx.currentTime + delay;
+
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'triangle';
+                osc.frequency.value = freq;
+
+                gain.gain.setValueAtTime(0, time);
+                gain.gain.linearRampToValueAtTime(0.15, time + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.01, time + duration);
+
+                osc.connect(gain);
+                gain.connect(this.masterGain);
+
+                osc.start(time);
+                osc.stop(time + duration);
+            }
+
+            playMelody(notes, bpm = 100) {
+                if (!this.enabled || this.muted) return;
+                const beatDur = 60 / bpm;
+                let time = 0;
+                notes.forEach(note => {
+                    const [degree, beats] = Array.isArray(note) ? note : [note, 1];
+                    if (degree !== null) {
+                        this.playNote(degree, beatDur * beats * 0.9, time);
+                    }
+                    time += beatDur * beats;
+                });
+            }
+
+            toggleMute() {
+                this.muted = !this.muted;
+                if (this.masterGain) {
+                    this.masterGain.gain.value = this.muted ? 0 : 0.3;
+                }
+                return this.muted;
+            }
+        }
+
+        const music = new MusicEngine();
+
+        // ============================================================
+        // PARTICLE SYSTEM
+        // ============================================================
+        class Particle {
+            constructor(x, y, color, type = 'data') {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.type = type;
+                this.vx = (Math.random() - 0.5) * 2;
+                this.vy = (Math.random() - 0.5) * 2;
+                this.life = 1;
+                this.decay = 0.005 + Math.random() * 0.01;
+                this.size = 2 + Math.random() * 3;
             }
 
             update() {
-                this.life++;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life -= this.decay;
 
-                // Move toward bridge center first, then to other side
-                const bridgeX = canvas.width * 0.5;
-                const bridgeY = canvas.height * 0.5;
-
-                const progress = this.life / this.maxLife;
-
-                if (progress < 0.4) {
-                    // Move toward bridge
-                    this.x += (bridgeX - this.x) * 0.02 * this.speed;
-                    this.y += (bridgeY - this.y) * 0.01 * this.speed;
-                } else if (progress < 0.6) {
-                    // On the bridge - blend colors
-                    this.crossing = true;
-                    this.x += (bridgeX - this.x) * 0.01;
-                    this.y += Math.sin(this.life * 0.1) * 0.5;
-                } else {
-                    // Cross to other side
-                    this.crossing = false;
-                    this.x += (this.targetX - this.x) * 0.02 * this.speed;
-                    this.y += (this.targetY - this.y) * 0.01 * this.speed;
-                }
-
-                if (this.life > this.maxLife) {
-                    this.reset();
+                if (this.type === 'float') {
+                    this.vy += 0.02; // gravity
+                    this.vx *= 0.99;
                 }
             }
 
-            draw() {
-                const alpha = Math.sin((this.life / this.maxLife) * Math.PI) * 0.8;
+            draw(ctx) {
+                if (this.life <= 0) return;
 
-                let r, g, b;
-                if (this.crossing) {
-                    r = BRIDGE_COLOR.r;
-                    g = BRIDGE_COLOR.g;
-                    b = BRIDGE_COLOR.b;
-                } else {
-                    const blend = this.life / this.maxLife;
-                    const other = this.side === 'keeper' ? MAKER_COLOR : KEEPER_COLOR;
-                    r = this.color.r + (other.r - this.color.r) * blend;
-                    g = this.color.g + (other.g - this.color.g) * blend;
-                    b = this.color.b + (other.b - this.color.b) * blend;
-                }
-
+                const radius = Math.max(0.1, this.size * this.life);
+                ctx.globalAlpha = this.life;
+                ctx.fillStyle = this.color;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                ctx.arc(this.x, this.y, radius, 0, Math.PI * 2);
                 ctx.fill();
 
                 // Glow
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha * 0.1})`;
+                ctx.arc(this.x, this.y, radius * 2, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.life * 0.2;
                 ctx.fill();
+                ctx.globalAlpha = 1;
             }
         }
 
-        // Initialize particles
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
-            const p = new Particle();
-            p.life = Math.random() * p.maxLife; // Stagger
-            particles.push(p);
+        let particles = [];
+
+        function addParticles(x, y, color, count = 5, type = 'data') {
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle(x, y, color, type));
+            }
         }
 
-        // Draw bridge structure
-        function drawBridge() {
-            const cx = canvas.width * 0.5;
-            const cy = canvas.height * 0.5;
-            const bridgeWidth = canvas.width * 0.3;
-            const bridgeHeight = canvas.height * 0.15;
+        // ============================================================
+        // DATA STREAM (flowing data points)
+        // ============================================================
+        class DataPoint {
+            constructor(side) {
+                this.side = side; // 'keeper' or 'maker'
+                this.reset();
+            }
+
+            reset() {
+                if (this.side === 'keeper') {
+                    this.x = 50 + Math.random() * 150;
+                    this.targetX = W / 2;
+                    this.color = COLORS.keeper;
+                } else {
+                    this.x = W - 50 - Math.random() * 150;
+                    this.targetX = W / 2;
+                    this.color = COLORS.maker;
+                }
+                this.y = 100 + Math.random() * 300;
+                this.speed = 0.5 + Math.random() * 1;
+                this.size = 2 + Math.random() * 2;
+                this.active = true;
+            }
+
+            update(bridgeActive) {
+                if (!this.active) return;
+
+                if (bridgeActive) {
+                    // Move toward center
+                    const dx = this.targetX - this.x;
+                    this.x += dx * 0.02 * this.speed;
+
+                    // Slight vertical drift
+                    this.y += Math.sin(Date.now() * 0.002 + this.x) * 0.5;
+
+                    // Check if reached bridge
+                    if (Math.abs(this.x - this.targetX) < 50) {
+                        addParticles(this.x, this.y, COLORS.bridge, 2);
+                        this.reset();
+                    }
+                }
+            }
+
+            draw(ctx) {
+                if (!this.active) return;
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = 0.8;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        let dataPoints = [];
+        for (let i = 0; i < 30; i++) {
+            dataPoints.push(new DataPoint(i < 15 ? 'keeper' : 'maker'));
+        }
+
+        // ============================================================
+        // TEXT TYPEWRITER
+        // ============================================================
+        class TypeWriter {
+            constructor() {
+                this.texts = [];
+                this.current = 0;
+            }
+
+            add(text, x, y, color, size = 16, align = 'center') {
+                this.texts.push({
+                    full: text,
+                    displayed: '',
+                    x, y, color, size, align,
+                    charIndex: 0,
+                    done: false,
+                    delay: 0
+                });
+            }
+
+            clear() {
+                this.texts = [];
+            }
+
+            update() {
+                this.texts.forEach((t, i) => {
+                    if (t.done) return;
+                    if (t.delay > 0) {
+                        t.delay--;
+                        return;
+                    }
+                    if (t.charIndex < t.full.length) {
+                        t.displayed += t.full[t.charIndex];
+                        t.charIndex++;
+                        if (t.charIndex >= t.full.length) {
+                            t.done = true;
+                            // Trigger next text
+                            if (this.texts[i + 1]) {
+                                this.texts[i + 1].delay = 10;
+                            }
+                        }
+                    }
+                });
+            }
+
+            draw(ctx) {
+                this.texts.forEach(t => {
+                    ctx.font = `${t.size}px "Courier New", monospace`;
+                    ctx.fillStyle = t.color;
+                    ctx.textAlign = t.align;
+                    ctx.fillText(t.displayed, t.x, t.y);
+
+                    // Cursor blink
+                    if (!t.done && Math.floor(Date.now() / 300) % 2 === 0) {
+                        const width = ctx.measureText(t.displayed).width;
+                        const cursorX = t.align === 'center' ? t.x + width / 2 + 2 : t.x + width + 2;
+                        ctx.fillRect(cursorX, t.y - t.size + 4, 8, t.size);
+                    }
+                });
+            }
+
+            allDone() {
+                return this.texts.every(t => t.done);
+            }
+        }
+
+        const typeWriter = new TypeWriter();
+
+        // ============================================================
+        // SCENES
+        // ============================================================
+        const SCENES = [
+            { name: 'Title', duration: 6000 },
+            { name: 'The City', duration: 8000 },
+            { name: 'Keepers of Data', duration: 8000 },
+            { name: 'Makers of Machines', duration: 8000 },
+            { name: 'Working Alone', duration: 6000 },
+            { name: 'Building the Bridge', duration: 8000 },
+            { name: 'What They Built', duration: 8000 },
+            { name: 'Pattern Made Useful', duration: 6000 },
+            { name: 'And You', duration: 8000 },
+            { name: 'Quietly Learning', duration: 6000 }
+        ];
+
+        let currentScene = 0;
+        let sceneStartTime = Date.now();
+        let isPlaying = false;
+        let bridgeProgress = 0;
+        let hasStarted = false;
+
+        function initScene(index) {
+            currentScene = index;
+            sceneStartTime = Date.now();
+            typeWriter.clear();
+            bridgeProgress = 0;
+
+            // Play scene melody
+            const melodies = [
+                [[0, 1], [2, 1], [4, 2]],           // Title
+                [[0, 1], [4, 1], [2, 1]],           // City
+                [[0, 0.5], [2, 0.5], [4, 1]],       // Keepers
+                [[4, 0.5], [2, 0.5], [0, 1]],       // Makers
+                [[0, 1], [null, 1], [2, 1]],        // Alone
+                [[0, 1], [2, 1], [4, 1], [6, 2]],   // Bridge
+                [[0, 0.5], [2, 0.5], [4, 0.5], [6, 0.5]], // Built
+                [[4, 1], [6, 1], [4, 2]],           // Pattern
+                [[0, 1], [4, 1], [6, 2]],           // You
+                [[0, 1], [2, 1], [4, 1], [0, 2]]    // End
+            ];
+            music.playMelody(melodies[index] || melodies[0], 90);
+
+            updateUI();
+        }
+
+        function updateUI() {
+            document.getElementById('sceneLabel').textContent = `SCENE ${currentScene + 1}/${SCENES.length}`;
+            document.getElementById('sceneText').textContent = SCENES[currentScene].name;
+            document.getElementById('progressFill').style.width = ((currentScene + 1) / SCENES.length * 100) + '%';
+        }
+
+        // ============================================================
+        // DRAWING FUNCTIONS
+        // ============================================================
+
+        function drawCity(side, progress) {
+            const baseX = side === 'left' ? 50 : W - 200;
+            const color = side === 'left' ? COLORS.keeper : COLORS.maker;
+
+            ctx.fillStyle = color;
+            ctx.globalAlpha = 0.3 + progress * 0.4;
+
+            // Buildings
+            for (let i = 0; i < 5; i++) {
+                const bw = 20 + Math.random() * 20;
+                const bh = 80 + Math.random() * 120;
+                const bx = baseX + i * 30;
+                ctx.fillRect(bx, H - 50 - bh * progress, bw, bh * progress);
+
+                // Windows
+                ctx.fillStyle = '#000';
+                for (let wy = 0; wy < bh * progress - 20; wy += 15) {
+                    for (let wx = 5; wx < bw - 5; wx += 10) {
+                        if (Math.random() > 0.3) {
+                            ctx.fillRect(bx + wx, H - 50 - bh * progress + wy + 10, 5, 8);
+                        }
+                    }
+                }
+                ctx.fillStyle = color;
+            }
+            ctx.globalAlpha = 1;
+        }
+
+        function drawRiver(time) {
+            ctx.strokeStyle = '#2a4a6a';
+            ctx.lineWidth = 2;
+
+            for (let y = 80; y < H - 50; y += 20) {
+                ctx.beginPath();
+                ctx.moveTo(W/2 - 60, y);
+                for (let x = W/2 - 60; x <= W/2 + 60; x += 10) {
+                    const wave = Math.sin(x * 0.05 + time * 0.003 + y * 0.1) * 5;
+                    ctx.lineTo(x, y + wave);
+                }
+                ctx.stroke();
+            }
+        }
+
+        function drawBridge(progress) {
+            if (progress <= 0) return;
+
+            const bridgeY = H / 2;
+            const bridgeWidth = 300 * progress;
+            const startX = W/2 - bridgeWidth/2;
+            const endX = W/2 + bridgeWidth/2;
 
             // Bridge glow
-            const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, bridgeWidth);
-            gradient.addColorStop(0, 'rgba(255, 200, 100, 0.15)');
-            gradient.addColorStop(0.5, 'rgba(255, 200, 100, 0.05)');
-            gradient.addColorStop(1, 'rgba(255, 200, 100, 0)');
+            const gradient = ctx.createLinearGradient(startX, bridgeY, endX, bridgeY);
+            gradient.addColorStop(0, COLORS.keeper);
+            gradient.addColorStop(0.5, COLORS.bridge);
+            gradient.addColorStop(1, COLORS.maker);
 
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(startX, bridgeY);
+            ctx.lineTo(endX, bridgeY);
+            ctx.stroke();
 
-            // Bridge lines
-            ctx.strokeStyle = 'rgba(255, 200, 100, 0.3)';
+            // Glow effect
+            ctx.shadowColor = COLORS.bridge;
+            ctx.shadowBlur = 20;
+            ctx.strokeStyle = COLORS.bridge;
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.moveTo(cx - bridgeWidth, cy);
-            ctx.lineTo(cx + bridgeWidth, cy);
+            ctx.moveTo(startX, bridgeY);
+            ctx.lineTo(endX, bridgeY);
             ctx.stroke();
+            ctx.shadowBlur = 0;
 
             // Pillars
-            ctx.strokeStyle = 'rgba(255, 200, 100, 0.2)';
-            ctx.beginPath();
-            ctx.moveTo(cx - bridgeWidth * 0.3, cy - bridgeHeight);
-            ctx.lineTo(cx - bridgeWidth * 0.3, cy + bridgeHeight);
-            ctx.moveTo(cx + bridgeWidth * 0.3, cy - bridgeHeight);
-            ctx.lineTo(cx + bridgeWidth * 0.3, cy + bridgeHeight);
-            ctx.stroke();
+            if (progress > 0.3) {
+                ctx.fillStyle = COLORS.bridge;
+                ctx.globalAlpha = 0.5;
+                ctx.fillRect(W/2 - 80, bridgeY - 30, 8, 60);
+                ctx.fillRect(W/2 + 72, bridgeY - 30, 8, 60);
+                ctx.globalAlpha = 1;
+            }
+
+            // Label
+            if (progress > 0.8) {
+                ctx.font = '12px "Courier New"';
+                ctx.fillStyle = COLORS.bridge;
+                ctx.textAlign = 'center';
+                ctx.fillText('MACHINE LEARNING', W/2, bridgeY - 15);
+            }
         }
 
-        // Labels
-        function drawLabels() {
-            ctx.font = '14px Georgia';
-            ctx.fillStyle = 'rgba(100, 180, 255, 0.6)';
-            ctx.textAlign = 'center';
-            ctx.fillText('KEEPERS OF DATA', canvas.width * 0.15, canvas.height * 0.9);
+        // ============================================================
+        // SCENE RENDERERS
+        // ============================================================
 
-            ctx.fillStyle = 'rgba(255, 160, 60, 0.6)';
-            ctx.fillText('MAKERS OF MACHINES', canvas.width * 0.85, canvas.height * 0.9);
+        function renderScene0(progress) {
+            // Title
+            if (progress > 0.1 && typeWriter.texts.length === 0) {
+                typeWriter.add('THE BRIDGE-BUILDERS', W/2, H/2 - 40, COLORS.bridge, 32);
+                typeWriter.add('an embermovie', W/2, H/2 + 10, COLORS.dim, 14);
+            }
+
+            typeWriter.update();
+            typeWriter.draw(ctx);
+
+            // Floating particles
+            if (Math.random() > 0.9) {
+                addParticles(Math.random() * W, Math.random() * H, COLORS.bridge, 1, 'float');
+            }
         }
 
-        // Animation loop
-        function animate() {
-            ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        function renderScene1(progress) {
+            // The City - show two sides
+            drawCity('left', Math.min(1, progress * 2));
+            drawCity('right', Math.min(1, progress * 2));
+            drawRiver(Date.now());
 
-            drawBridge();
+            if (progress > 0.3 && typeWriter.texts.length === 0) {
+                typeWriter.add('There was once a vast city', W/2, 50, COLORS.dim, 16);
+                typeWriter.add('split by a wide river.', W/2, 75, COLORS.dim, 16);
+            }
 
-            particles.forEach(p => {
-                p.update();
-                p.draw();
+            if (progress > 0.6) {
+                ctx.font = '12px "Courier New"';
+                ctx.fillStyle = COLORS.keeper;
+                ctx.textAlign = 'center';
+                ctx.fillText('KEEPERS', 120, H - 30);
+
+                ctx.fillStyle = COLORS.maker;
+                ctx.fillText('MAKERS', W - 120, H - 30);
+            }
+
+            typeWriter.update();
+            typeWriter.draw(ctx);
+        }
+
+        function renderScene2(progress) {
+            // Keepers of Data
+            drawCity('left', 1);
+
+            // Data particles floating on left side
+            dataPoints.filter(d => d.side === 'keeper').forEach(d => {
+                d.x = 50 + Math.random() * 150;
+                d.y = 100 + Math.random() * 300;
+                d.draw(ctx);
             });
 
-            drawLabels();
+            if (progress > 0.1 && typeWriter.texts.length === 0) {
+                typeWriter.add('THE KEEPERS OF DATA', 250, 80, COLORS.keeper, 20);
+                typeWriter.add('━━━━━━━━━━━━━━━━━━━━━━', 250, 105, COLORS.dim, 12);
+            }
+            if (progress > 0.3 && typeWriter.texts.length === 2) {
+                typeWriter.add('They collected stories:', 250, 140, '#c8c8c8', 14);
+                typeWriter.add('• how hot the day was', 250, 170, COLORS.dim, 12);
+                typeWriter.add('• how many cones were scooped', 250, 195, COLORS.dim, 12);
+                typeWriter.add('• the weight and pulse of a patient', 250, 220, COLORS.dim, 12);
+                typeWriter.add('• the quiet geometry of penguin wings', 250, 245, COLORS.dim, 12);
+            }
+            if (progress > 0.7 && typeWriter.texts.length === 7) {
+                typeWriter.add('They searched for whisper-patterns', 250, 290, COLORS.cluster, 14);
+                typeWriter.add('inside the chaos.', 250, 315, COLORS.cluster, 14);
+            }
 
-            requestAnimationFrame(animate);
+            typeWriter.update();
+            typeWriter.draw(ctx);
         }
 
-        animate();
+        function renderScene3(progress) {
+            // Makers of Machines
+            drawCity('right', 1);
+
+            // Gear-like animations
+            const gearX = W - 150;
+            const gearY = H/2;
+            ctx.strokeStyle = COLORS.maker;
+            ctx.lineWidth = 2;
+
+            for (let i = 0; i < 8; i++) {
+                const angle = (Date.now() * 0.002) + (i * Math.PI / 4);
+                const x1 = gearX + Math.cos(angle) * 30;
+                const y1 = gearY + Math.sin(angle) * 30;
+                const x2 = gearX + Math.cos(angle) * 50;
+                const y2 = gearY + Math.sin(angle) * 50;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            }
+
+            if (progress > 0.1 && typeWriter.texts.length === 0) {
+                typeWriter.add('THE MAKERS OF MACHINES', 300, 80, COLORS.maker, 20);
+                typeWriter.add('━━━━━━━━━━━━━━━━━━━━━━━', 300, 105, COLORS.dim, 12);
+            }
+            if (progress > 0.3 && typeWriter.texts.length === 2) {
+                typeWriter.add('Engineers who built tools for:', 300, 140, '#c8c8c8', 14);
+                typeWriter.add('• phones', 300, 170, COLORS.dim, 12);
+                typeWriter.add('• satellites', 300, 195, COLORS.dim, 12);
+                typeWriter.add('• tiny boards at the edge of the world', 300, 220, COLORS.dim, 12);
+                typeWriter.add('• humming servers in glass towers', 300, 245, COLORS.dim, 12);
+            }
+            if (progress > 0.7 && typeWriter.texts.length === 7) {
+                typeWriter.add('Their craft was not to KNOW', 300, 290, COLORS.cluster, 14);
+                typeWriter.add('but to BUILD THINGS THAT COULD ACT.', 300, 315, COLORS.cluster, 14);
+            }
+
+            typeWriter.update();
+            typeWriter.draw(ctx);
+        }
+
+        function renderScene4(progress) {
+            // Working Alone
+            drawCity('left', 1);
+            drawCity('right', 1);
+            drawRiver(Date.now());
+
+            if (progress > 0.1 && typeWriter.texts.length === 0) {
+                typeWriter.add('For a long time, the two sides worked alone.', W/2, 80, COLORS.dim, 16);
+            }
+            if (progress > 0.4 && typeWriter.texts.length === 1) {
+                typeWriter.add('The Keepers understood the past.', W/2, 200, COLORS.keeper, 16);
+                typeWriter.add('The Makers shaped the future.', W/2, 230, COLORS.maker, 16);
+            }
+            if (progress > 0.7 && typeWriter.texts.length === 3) {
+                typeWriter.add('But what they could not do — not yet —', W/2, 300, '#c8c8c8', 14);
+                typeWriter.add('was let the past guide the machines.', W/2, 330, COLORS.bridge, 16);
+            }
+
+            typeWriter.update();
+            typeWriter.draw(ctx);
+        }
+
+        function renderScene5(progress) {
+            // Building the Bridge
+            drawCity('left', 1);
+            drawCity('right', 1);
+            drawRiver(Date.now());
+
+            bridgeProgress = Math.min(1, progress * 1.5);
+            drawBridge(bridgeProgress);
+
+            // Data points flowing toward bridge
+            dataPoints.forEach(d => {
+                d.update(bridgeProgress > 0.3);
+                d.draw(ctx);
+            });
+
+            if (progress > 0.1 && typeWriter.texts.length === 0) {
+                typeWriter.add('So they decided to build a', W/2, 60, '#c8c8c8', 16);
+                typeWriter.add('BRIDGE', W/2, 100, COLORS.bridge, 36);
+            }
+            if (progress > 0.8 && typeWriter.texts.length === 2) {
+                typeWriter.add('They called it MACHINE LEARNING.', W/2, H - 60, COLORS.bridge, 16);
+            }
+
+            typeWriter.update();
+            typeWriter.draw(ctx);
+        }
+
+        function renderScene6(progress) {
+            // What They Built
+            drawBridge(1);
+
+            // Flowing particles across bridge
+            if (Math.random() > 0.8) {
+                const side = Math.random() > 0.5 ? 'left' : 'right';
+                const x = side === 'left' ? W/2 - 100 : W/2 + 100;
+                addParticles(x, H/2, COLORS.together, 2);
+            }
+
+            if (progress > 0.05 && typeWriter.texts.length === 0) {
+                typeWriter.add('What they built together:', W/2, 60, COLORS.together, 18);
+            }
+            if (progress > 0.2 && typeWriter.texts.length === 1) {
+                typeWriter.add('An app whispers to an ice-cream seller:', W/2, 120, '#c8c8c8', 12);
+                typeWriter.add('"Tomorrow will be busy — prepare more cones."', W/2, 145, COLORS.maker, 14);
+            }
+            if (progress > 0.5 && typeWriter.texts.length === 3) {
+                typeWriter.add('A medical model quietly suggests:', W/2, 200, '#c8c8c8', 12);
+                typeWriter.add('"Watch this patient closely."', W/2, 225, COLORS.keeper, 14);
+            }
+            if (progress > 0.75 && typeWriter.texts.length === 5) {
+                typeWriter.add('A tiny device studies a penguin and murmurs:', W/2, 280, '#c8c8c8', 12);
+                typeWriter.add('"Gentoo."', W/2, 310, COLORS.cluster, 18);
+            }
+
+            typeWriter.update();
+            typeWriter.draw(ctx);
+        }
+
+        function renderScene7(progress) {
+            // Pattern Made Useful
+            drawBridge(1);
+
+            // Pulsing glow
+            const pulse = Math.sin(Date.now() * 0.003) * 0.3 + 0.7;
+            ctx.globalAlpha = pulse;
+            ctx.fillStyle = COLORS.bridge;
+            ctx.beginPath();
+            ctx.arc(W/2, H/2, 80, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+
+            if (progress > 0.1 && typeWriter.texts.length === 0) {
+                typeWriter.add('Not as magic.', W/2, 100, COLORS.dim, 16);
+                typeWriter.add('Not as prophecy.', W/2, 130, COLORS.dim, 16);
+            }
+            if (progress > 0.4 && typeWriter.texts.length === 2) {
+                typeWriter.add('But as PATTERN MADE USEFUL.', W/2, 200, COLORS.bridge, 22);
+            }
+            if (progress > 0.7 && typeWriter.texts.length === 3) {
+                typeWriter.add('━━━━━━━━━━━━━━━━━━━━━━', W/2, 280, COLORS.dim, 12);
+                typeWriter.add('Machine learning is not one discipline —', W/2, 320, '#c8c8c8', 14);
+                typeWriter.add('but a MEETING PLACE', W/2, 350, COLORS.together, 18);
+            }
+
+            typeWriter.update();
+            typeWriter.draw(ctx);
+        }
+
+        function renderScene8(progress) {
+            // And You
+            if (progress > 0.1 && typeWriter.texts.length === 0) {
+                typeWriter.add('AND YOU', W/2, 80, COLORS.bridge, 32);
+            }
+            if (progress > 0.3 && typeWriter.texts.length === 1) {
+                typeWriter.add('If you prefer the edge —', W/2, 160, '#c8c8c8', 14);
+                typeWriter.add('those windy frontiers where models run', W/2, 190, '#c8c8c8', 14);
+                typeWriter.add('on tiny devices and real-world machines —', W/2, 220, '#c8c8c8', 14);
+            }
+            if (progress > 0.6 && typeWriter.texts.length === 4) {
+                typeWriter.add("then you're one of the", W/2, 280, '#c8c8c8', 14);
+                typeWriter.add('BRIDGE-ARCHITECTS.', W/2, 320, COLORS.together, 24);
+            }
+            if (progress > 0.85 && typeWriter.texts.length === 6) {
+                typeWriter.add("You're helping the pattern-listeners", W/2, 400, COLORS.dim, 12);
+                typeWriter.add('walk out of the lab and into the world.', W/2, 425, COLORS.bridge, 14);
+            }
+
+            // Particle emanation from center
+            if (Math.random() > 0.85) {
+                addParticles(W/2, 320, COLORS.together, 2, 'float');
+            }
+
+            typeWriter.update();
+            typeWriter.draw(ctx);
+        }
+
+        function renderScene9(progress) {
+            // Quietly Learning
+            drawCity('left', 1);
+            drawCity('right', 1);
+            drawBridge(1);
+
+            // Many particles flowing
+            dataPoints.forEach(d => {
+                d.update(true);
+                d.draw(ctx);
+            });
+
+            if (progress > 0.1 && typeWriter.texts.length === 0) {
+                typeWriter.add('Where they can stand beside us', W/2, 60, '#c8c8c8', 14);
+                typeWriter.add('in shops and clinics and frozen coastlines', W/2, 85, '#c8c8c8', 14);
+            }
+            if (progress > 0.4 && typeWriter.texts.length === 2) {
+                typeWriter.add('quietly noticing', W/2, 150, COLORS.keeper, 18);
+                typeWriter.add('quietly helping', W/2, 180, COLORS.maker, 18);
+                typeWriter.add('quietly learning.', W/2, 210, COLORS.bridge, 18);
+            }
+            if (progress > 0.75 && typeWriter.texts.length === 5) {
+                typeWriter.add('━━━━━━━━━━━━━━━━━━━━━━', W/2, 300, COLORS.dim, 12);
+                typeWriter.add('VERSE-STORYPATH', W/2, 340, COLORS.dim, 14);
+                typeWriter.add('Learning through narrative', W/2, 365, COLORS.dim, 12);
+            }
+
+            typeWriter.update();
+            typeWriter.draw(ctx);
+        }
+
+        const sceneRenderers = [
+            renderScene0, renderScene1, renderScene2, renderScene3, renderScene4,
+            renderScene5, renderScene6, renderScene7, renderScene8, renderScene9
+        ];
+
+        // ============================================================
+        // MAIN LOOP
+        // ============================================================
+
+        function render() {
+            // Clear
+            ctx.fillStyle = COLORS.bg;
+            ctx.fillRect(0, 0, W, H);
+
+            // Don't render scenes until started
+            if (!hasStarted) {
+                requestAnimationFrame(render);
+                return;
+            }
+
+            // Scene progress
+            const elapsed = Date.now() - sceneStartTime;
+            const duration = SCENES[currentScene].duration;
+            const progress = Math.min(1, elapsed / duration);
+
+            // Render current scene
+            sceneRenderers[currentScene](progress);
+
+            // Update particles
+            particles.forEach(p => p.update());
+            // Filter dead particles
+            particles = particles.filter(p => p.life > 0);
+            // Draw remaining particles
+            particles.forEach(p => p.draw(ctx));
+
+            // Auto-advance when playing and scene complete
+            if (isPlaying && progress >= 1) {
+                if (currentScene < SCENES.length - 1) {
+                    initScene(currentScene + 1);
+                } else {
+                    isPlaying = false;
+                    document.getElementById('playBtn').textContent = '▶ REPLAY';
+                }
+            }
+
+            requestAnimationFrame(render);
+        }
+
+        // ============================================================
+        // CONTROLS
+        // ============================================================
+
+        document.getElementById('startOverlay').addEventListener('click', () => {
+            document.getElementById('startOverlay').style.display = 'none';
+            music.init();
+            hasStarted = true;
+            isPlaying = true;
+            document.getElementById('playBtn').textContent = '⏸ PAUSE';
+            initScene(0);
+        });
+
+        document.getElementById('playBtn').addEventListener('click', () => {
+            if (!music.enabled) music.init();
+
+            // Hide overlay if still showing
+            document.getElementById('startOverlay').style.display = 'none';
+            hasStarted = true;
+
+            if (isPlaying) {
+                isPlaying = false;
+                document.getElementById('playBtn').textContent = '▶ PLAY';
+            } else {
+                if (currentScene >= SCENES.length - 1) {
+                    initScene(0);
+                } else {
+                    sceneStartTime = Date.now();
+                }
+                isPlaying = true;
+                document.getElementById('playBtn').textContent = '⏸ PAUSE';
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (!music.enabled) music.init();
+            document.getElementById('startOverlay').style.display = 'none';
+            hasStarted = true;
+            if (currentScene > 0) {
+                initScene(currentScene - 1);
+            }
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (!music.enabled) music.init();
+            document.getElementById('startOverlay').style.display = 'none';
+            hasStarted = true;
+            if (currentScene < SCENES.length - 1) {
+                initScene(currentScene + 1);
+            }
+        });
+
+        document.getElementById('muteBtn').addEventListener('click', () => {
+            if (!music.enabled) music.init();
+            const muted = music.toggleMute();
+            document.getElementById('muteBtn').textContent = muted ? '♪ OFF' : '♪ MUSIC';
+            document.getElementById('muteBtn').classList.toggle('active', !muted);
+        });
+
+        // Keyboard
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ') {
+                e.preventDefault();
+                document.getElementById('playBtn').click();
+            } else if (e.key === 'ArrowRight') {
+                document.getElementById('nextBtn').click();
+            } else if (e.key === 'ArrowLeft') {
+                document.getElementById('prevBtn').click();
+            } else if (e.key === 'm') {
+                document.getElementById('muteBtn').click();
+            }
+        });
+
+        // Start render loop
+        render();
     </script>
 </body>
 </html>

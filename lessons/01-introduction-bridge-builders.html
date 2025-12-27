@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 1 — The Bridge-Builders</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #0a0a0a;
+            color: #e8e8e8;
+            line-height: 1.8;
+            padding: 0;
+        }
+
+        .hero-container {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            min-height: 400px;
+            overflow: hidden;
+        }
+
+        #bridgeCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(transparent 60%, #0a0a0a);
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            text-shadow: 0 0 40px rgba(255,200,100,0.5);
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: #f0c040;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin: 3rem 0 1.5rem;
+            color: #d4a030;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+        }
+
+        strong {
+            color: #f0c040;
+        }
+
+        em {
+            color: #c8a060;
+        }
+
+        ul {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        blockquote {
+            border-left: 3px solid #f0c040;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #c8c8c8;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #333;
+            margin: 3rem 0;
+        }
+
+        .highlight {
+            background: linear-gradient(90deg, transparent, rgba(240,192,64,0.1), transparent);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        .formula {
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #f0c040;
+            margin: 1.5rem 0;
+        }
+
+        .poetic {
+            text-align: center;
+            font-style: italic;
+            color: #a0a0a0;
+            margin: 2rem 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Hero -->
+    <div class="hero-container">
+        <canvas id="bridgeCanvas"></canvas>
+        <div class="hero-overlay">
+            <h1 class="hero-title">The Bridge-Builders</h1>
+        </div>
+    </div>
+
+    <div class="content">
+        <p>There was once a vast city split by a wide river.</p>
+
+        <p>On one side lived the <strong>Keepers of Data</strong> — people who collected the stories of the world. They walked through ice-cream shops, hospitals, and frozen Antarctic coasts, gathering numbers and notes like fireflies in jars:</p>
+
+        <ul>
+            <li>how hot the day was</li>
+            <li>how many cones were scooped</li>
+            <li>the weight and pulse of a patient</li>
+            <li>the quiet geometry of penguin wings</li>
+        </ul>
+
+        <p>They didn't just hoard the past — they listened to it. They searched for whisper-patterns inside the chaos.</p>
+
+        <p>Across the river lived the <strong>Makers of Machines</strong> — engineers who built tools that could live inside phones, satellites, tiny boards at the edge of the world, and humming servers in glass towers. Their craft was not to <em>know</em> — but to <em>build things that could act.</em></p>
+
+        <p>For a long time, the two sides worked alone.</p>
+
+        <div class="poetic">
+            The Keepers understood the past.<br>
+            The Makers shaped the future.<br>
+            But what they could not do — not yet — was <strong>let the past guide the machines.</strong>
+        </div>
+
+        <p>So they decided to build a bridge.</p>
+
+        <p>They called the bridge <strong>Machine Learning.</strong></p>
+
+        <hr>
+
+        <h2>The Work of the Keepers</h2>
+
+        <p>The Keepers gathered mountains of memory:</p>
+
+        <ul>
+            <li>summers where heat melted pavement and ice-cream lines wrapped around the block</li>
+            <li>clinic visits where silent numbers carried quiet warnings</li>
+            <li>penguins catalogued feather-by-feather beneath a pale Antarctic sky</li>
+        </ul>
+
+        <p>They cleaned the data, soothed its rough edges, and arranged it so patterns could breathe.<br>
+        Then they sent it across the bridge.</p>
+
+        <hr>
+
+        <h2>The Work of the Makers</h2>
+
+        <p>The Makers received the prepared memory and wove it into software — little minds that didn't think like people, but noticed relationships with unblinking patience.</p>
+
+        <p>Inside those minds lived a simple intention:</p>
+
+        <blockquote>
+            "When you see something like this again…<br>
+            tell me what you think might happen next."
+        </blockquote>
+
+        <p>So an app could whisper to an ice-cream seller,<br>
+        <em>"Tomorrow will be busy — prepare more cones."</em></p>
+
+        <p>A medical model could quietly suggest,<br>
+        <em>"Watch this patient closely — the numbers are shifting."</em></p>
+
+        <p>And a tiny device running far from the cloud could study a penguin and murmur,<br>
+        <em>"Gentoo."</em></p>
+
+        <div class="highlight">
+            Not as magic.<br>
+            Not as prophecy.<br>
+            But as <strong>pattern made useful.</strong>
+        </div>
+
+        <hr>
+
+        <h2>The Heart of It</h2>
+
+        <p>Machine learning is not one discipline —<br>
+        but a <strong>meeting place</strong>:</p>
+
+        <ul>
+            <li>where <strong>data science</strong> listens to the past</li>
+            <li>and <strong>software engineering</strong> carries that wisdom forward into living systems</li>
+        </ul>
+
+        <p>And the bridge between them is not merely code.<br>
+        It is <strong>collaboration.</strong></p>
+
+        <div class="poetic">
+            Because no listener hears clearly without good stories.<br>
+            And no story changes the world unless it can act.
+        </div>
+
+        <hr>
+
+        <h2>And You</h2>
+
+        <p>If you prefer the <em>edge</em> — those windy frontiers where models run on tiny devices and real-world machines — then you're one of the <strong>bridge-architects.</strong></p>
+
+        <p>You're helping the pattern-listeners walk out of the lab<br>
+        and into the world.</p>
+
+        <p>Where they can stand beside us<br>
+        in shops and clinics and frozen coastlines<br>
+        quietly noticing<br>
+        quietly helping<br>
+        quietly learning.</p>
+    </div>
+
+    <footer>
+        <p>Verse-StoryPath · Learning through narrative</p>
+    </footer>
+
+    <script>
+        // EmberMovie: The Bridge
+        const canvas = document.getElementById('bridgeCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resize() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        // Particles
+        const particles = [];
+        const PARTICLE_COUNT = 150;
+
+        // Colors
+        const KEEPER_COLOR = { r: 100, g: 180, b: 255 };  // Blue - data side
+        const MAKER_COLOR = { r: 255, g: 160, b: 60 };    // Orange - machine side
+        const BRIDGE_COLOR = { r: 255, g: 200, b: 100 };  // Gold - the bridge
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                // Start from either side
+                this.side = Math.random() > 0.5 ? 'keeper' : 'maker';
+
+                if (this.side === 'keeper') {
+                    this.x = Math.random() * canvas.width * 0.3;
+                    this.targetX = canvas.width * 0.7 + Math.random() * canvas.width * 0.3;
+                    this.color = KEEPER_COLOR;
+                } else {
+                    this.x = canvas.width * 0.7 + Math.random() * canvas.width * 0.3;
+                    this.targetX = Math.random() * canvas.width * 0.3;
+                    this.color = MAKER_COLOR;
+                }
+
+                this.y = Math.random() * canvas.height;
+                this.targetY = canvas.height * 0.4 + Math.random() * canvas.height * 0.2;
+
+                this.speed = 0.5 + Math.random() * 1.5;
+                this.size = 1 + Math.random() * 3;
+                this.life = 0;
+                this.maxLife = 200 + Math.random() * 300;
+                this.crossing = false;
+            }
+
+            update() {
+                this.life++;
+
+                // Move toward bridge center first, then to other side
+                const bridgeX = canvas.width * 0.5;
+                const bridgeY = canvas.height * 0.5;
+
+                const progress = this.life / this.maxLife;
+
+                if (progress < 0.4) {
+                    // Move toward bridge
+                    this.x += (bridgeX - this.x) * 0.02 * this.speed;
+                    this.y += (bridgeY - this.y) * 0.01 * this.speed;
+                } else if (progress < 0.6) {
+                    // On the bridge - blend colors
+                    this.crossing = true;
+                    this.x += (bridgeX - this.x) * 0.01;
+                    this.y += Math.sin(this.life * 0.1) * 0.5;
+                } else {
+                    // Cross to other side
+                    this.crossing = false;
+                    this.x += (this.targetX - this.x) * 0.02 * this.speed;
+                    this.y += (this.targetY - this.y) * 0.01 * this.speed;
+                }
+
+                if (this.life > this.maxLife) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                const alpha = Math.sin((this.life / this.maxLife) * Math.PI) * 0.8;
+
+                let r, g, b;
+                if (this.crossing) {
+                    r = BRIDGE_COLOR.r;
+                    g = BRIDGE_COLOR.g;
+                    b = BRIDGE_COLOR.b;
+                } else {
+                    const blend = this.life / this.maxLife;
+                    const other = this.side === 'keeper' ? MAKER_COLOR : KEEPER_COLOR;
+                    r = this.color.r + (other.r - this.color.r) * blend;
+                    g = this.color.g + (other.g - this.color.g) * blend;
+                    b = this.color.b + (other.b - this.color.b) * blend;
+                }
+
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                ctx.fill();
+
+                // Glow
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha * 0.1})`;
+                ctx.fill();
+            }
+        }
+
+        // Initialize particles
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            const p = new Particle();
+            p.life = Math.random() * p.maxLife; // Stagger
+            particles.push(p);
+        }
+
+        // Draw bridge structure
+        function drawBridge() {
+            const cx = canvas.width * 0.5;
+            const cy = canvas.height * 0.5;
+            const bridgeWidth = canvas.width * 0.3;
+            const bridgeHeight = canvas.height * 0.15;
+
+            // Bridge glow
+            const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, bridgeWidth);
+            gradient.addColorStop(0, 'rgba(255, 200, 100, 0.15)');
+            gradient.addColorStop(0.5, 'rgba(255, 200, 100, 0.05)');
+            gradient.addColorStop(1, 'rgba(255, 200, 100, 0)');
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Bridge lines
+            ctx.strokeStyle = 'rgba(255, 200, 100, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(cx - bridgeWidth, cy);
+            ctx.lineTo(cx + bridgeWidth, cy);
+            ctx.stroke();
+
+            // Pillars
+            ctx.strokeStyle = 'rgba(255, 200, 100, 0.2)';
+            ctx.beginPath();
+            ctx.moveTo(cx - bridgeWidth * 0.3, cy - bridgeHeight);
+            ctx.lineTo(cx - bridgeWidth * 0.3, cy + bridgeHeight);
+            ctx.moveTo(cx + bridgeWidth * 0.3, cy - bridgeHeight);
+            ctx.lineTo(cx + bridgeWidth * 0.3, cy + bridgeHeight);
+            ctx.stroke();
+        }
+
+        // Labels
+        function drawLabels() {
+            ctx.font = '14px Georgia';
+            ctx.fillStyle = 'rgba(100, 180, 255, 0.6)';
+            ctx.textAlign = 'center';
+            ctx.fillText('KEEPERS OF DATA', canvas.width * 0.15, canvas.height * 0.9);
+
+            ctx.fillStyle = 'rgba(255, 160, 60, 0.6)';
+            ctx.fillText('MAKERS OF MACHINES', canvas.width * 0.85, canvas.height * 0.9);
+        }
+
+        // Animation loop
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            drawBridge();
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            drawLabels();
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>

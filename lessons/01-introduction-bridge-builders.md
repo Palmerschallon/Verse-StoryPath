@@ -1,5 +1,9 @@
 # Lesson 1 — The Bridge-Builders
 
+![The Bridge](../images/01-bridge-hero.png)
+
+---
+
 There was once a vast city split by a wide river.
 
 On one side lived the **Keepers of Data** — people who collected the stories of the world. They walked through ice-cream shops, hospitals, and frozen Antarctic coasts, gathering numbers and notes like fireflies in jars:
